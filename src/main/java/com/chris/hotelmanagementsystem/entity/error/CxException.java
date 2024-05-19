@@ -25,7 +25,7 @@ public class CxException extends RuntimeException {
   }
 
   public static <T extends CEntity> CxException notFound(Class<T> tClass, Long id) {
-    return new CxException(HttpStatus.NOT_FOUND, String.format("(%s) with id [%d] not found", tClass.getSimpleName(), id));
+    return new CxException(HttpStatus.NOT_FOUND, String.format("(%s) with (id [%d] not found", tClass.getSimpleName(), id));
   }
 
   public static CxException forbidden(String message) {
@@ -49,5 +49,13 @@ public class CxException extends RuntimeException {
 
   public static <T extends CEntity> Exception duplicate(Class<T> tClass, String field, Object value) {
     return new CxException(HttpStatus.CONFLICT, String.format("(%s) duplicate value for (%s): [%s]", tClass.getSimpleName(), field, value));
+  }
+
+  public static <T extends CEntity> CxException notFound(Class<T> tClass, String field, Object value) {
+    return new CxException(HttpStatus.NOT_FOUND, String.format("(%s) with (%s) [%s] not found", tClass.getSimpleName(), field, value));
+  }
+
+  public static CxException unauthorized(String message) {
+    return new CxException(HttpStatus.UNAUTHORIZED, message);
   }
 }

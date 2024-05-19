@@ -33,7 +33,7 @@ public abstract class CEntityFacade <T extends CEntity> {
   }
   
   public T findById(Long id) {
-    return repository().findById(id).orElseThrow(() -> CxException.notFound(entityClass(), id));
+    return repository().findById(id).orElseThrow(() -> CxException.notFound(entityClass(), "id", id));
   }
   
   public Page<T> findAll(Pageable pageable) {

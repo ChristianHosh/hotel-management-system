@@ -10,8 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,6 +21,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
@@ -38,7 +41,7 @@ import java.util.StringJoiner;
 @Getter
 @SoftDelete(columnName = "deleted")
 @MappedSuperclass
-public abstract class CEntity {
+public abstract class CEntity implements Serializable, Comparable<CEntity> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -124,5 +127,32 @@ public abstract class CEntity {
   }
 
   record SpecWrapper<T extends CEntity>(Specification<T> spec, String fieldName, Object value) {
+  }
+
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null) return false;
+    if (o instanceof CEntity entity && (this.getClass().equals(entity.getClass()))) {
+      return Objects.equals(this.id, entity.id);
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = Objects.hashCode(id);
+    result = 31 * result + Objects.hashCode(getClass().getName());
+    result = 31 * result + Objects.hashCode(createdOn);
+    result = 31 * result + Objects.hashCode(updatedOn);
+    return result;
+  }
+
+  @Override
+  public int compareTo(@NotNull CEntity o) {
+    return compareToImpl(o);
+  }
+
+  public int compareToImpl(@NotNull CEntity o) {
+    return Long.compare(this.id, o.id);
   }
 }
