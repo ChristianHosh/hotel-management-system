@@ -7,12 +7,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "t_room_class_bed")
-public class RoomClassBed {
+public class RoomClassBed implements Serializable {
 
   @EmbeddedId
   private RoomClassBedId id;
