@@ -50,7 +50,7 @@ public class RoomClassBed implements Serializable {
           Long roomClassId,
           @Column(name = "c_bed_type_id", nullable = false)
           Long bedTypeId
-  ) {
+  ) implements Serializable {
     @Override
     public boolean equals(Object object) {
       if (this == object) return true;
