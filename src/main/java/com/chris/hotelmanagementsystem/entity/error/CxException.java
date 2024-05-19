@@ -9,17 +9,17 @@ public class CxException extends RuntimeException {
 
   private final HttpStatus httpStatus;
 
-  public CxException(HttpStatus httpStatus, String message) {
+  private CxException(HttpStatus httpStatus, String message) {
     super(message);
     this.httpStatus = httpStatus;
   }
 
-  public CxException(String message, Throwable cause) {
+  private CxException(String message, Throwable cause) {
     super(message, cause);
     this.httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
   }
 
-  public CxException(String message) {
+  private CxException(String message) {
     super(message);
     this.httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
   }

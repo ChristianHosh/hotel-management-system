@@ -42,19 +42,19 @@ public abstract class CEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
+  @Column(name = "c_id", nullable = false)
   private Long id;
 
   @CreationTimestamp
-  @Column(name = "created_on", nullable = false, updatable = false)
+  @Column(name = "c_created_on", nullable = false, updatable = false)
   private LocalDateTime createdOn;
 
   @UpdateTimestamp
-  @Column(name = "updated_on", nullable = false)
+  @Column(name = "c_updated_on", nullable = false)
   private LocalDateTime updatedOn;
 
   @Getter(AccessLevel.NONE)
-  @Column(name = "keyword")
+  @Column(name = "c_keyword")
   private String keyword;
 
   @PrePersist

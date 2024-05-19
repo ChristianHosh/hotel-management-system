@@ -3,7 +3,6 @@ package com.chris.hotelmanagementsystem.entity;
 import com.chris.hotelmanagementsystem.entity.error.CxException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 

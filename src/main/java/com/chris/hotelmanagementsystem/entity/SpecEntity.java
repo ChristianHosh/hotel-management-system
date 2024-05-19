@@ -19,7 +19,7 @@ import lombok.Setter;
 public abstract class SpecEntity extends CEntity {
   
   @Keyword
-  @Column(name = "name", nullable = false)
+  @Column(name = "c_name", nullable = false)
   private String name;
   
   
