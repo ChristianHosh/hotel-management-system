@@ -1,6 +1,7 @@
 package com.chris.hotelmanagementsystem.room;
 
 import com.chris.hotelmanagementsystem.entity.CEntity;
+import com.chris.hotelmanagementsystem.entity.annotations.Keyword;
 import com.chris.hotelmanagementsystem.floor.Floor;
 import com.chris.hotelmanagementsystem.room_class.RoomClass;
 import jakarta.persistence.*;
@@ -17,10 +18,12 @@ import lombok.Setter;
 })
 public class Room extends CEntity {
 
+  @Keyword
   @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}, optional = false)
   @JoinColumn(name = "c_room_class_id", nullable = false)
   private RoomClass roomClass;
 
+  @Keyword
   @Column(name = "c_room_number", nullable = false)
   private Integer roomNumber;
 
@@ -28,4 +31,7 @@ public class Room extends CEntity {
   @JoinColumn(name = "c_floor_id", nullable = false)
   private Floor floor;
 
+  public Double getBasePrice() {
+    return roomClass.getBasePrice();
+  }
 }

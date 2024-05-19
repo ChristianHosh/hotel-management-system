@@ -2,7 +2,11 @@ package com.chris.hotelmanagementsystem.reservation;
 
 import com.chris.hotelmanagementsystem.addon.Addon;
 import com.chris.hotelmanagementsystem.entity.CEntity;
+import com.chris.hotelmanagementsystem.entity.annotations.Keyword;
+import com.chris.hotelmanagementsystem.entity.error.CxException;
 import com.chris.hotelmanagementsystem.room.Room;
+import com.chris.hotelmanagementsystem.room_class.RoomClass;
+import com.chris.hotelmanagementsystem.room_class.room_class_bed.RoomClassBed;
 import com.chris.hotelmanagementsystem.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -43,6 +47,7 @@ public class Reservation extends CEntity {
   @Column(name = "c_payment_status", nullable = false)
   private PaymentStatus paymentStatus;
 
+  @Keyword
   @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}, optional = false)
   @JoinColumn(name = "c_guest_id", nullable = false)
   private User guest;
@@ -59,5 +64,47 @@ public class Reservation extends CEntity {
           inverseJoinColumns = @JoinColumn(name = "c_addon_id"))
   private Set<Addon> addons = new LinkedHashSet<>();
 
+  @Override
+  protected void validate() {
+    super.validate();
 
+    if (guest.getRole() != User.Role.USER)
+      throw CxException.badRequest(this, "guest cannot be staff");
+
+    if (checkInDate.isAfter(checkOutDate))
+      throw CxException.badRequest(this, "check-in date cannot be after check-out date");
+
+    if (checkInDate.isBefore(LocalDate.now().plusDays(1)))
+      throw CxException.badRequest(this, "check-in date cannot be before today");
+
+    if (rooms.isEmpty())
+      throw CxException.badRequest(this, "at least 1 room is required");
+
+    // check if the number of adults and children is less than the number of beds in the rooms
+    var roomsSummary = rooms.stream()
+            .map(Room::getRoomClass)
+            .flatMap(RoomClass::getRoomClassBedsStream)
+            .mapToInt(RoomClassBed::getNumberOfBeds)
+            .summaryStatistics();
+
+    if (numberOfAdults + numberOfChildren > roomsSummary.getSum())
+      throw CxException.badRequest(this, String.format("number of adults and children cannot be more than [%d]", roomsSummary.getSum()));
+  }
+
+  @Override
+  public void preSave() {
+    super.preSave();
+
+    // calculate the total price of the reservation
+    int numberOfNights = checkInDate.until(checkOutDate).getDays();
+    double roomsTotalPrice = rooms.stream()
+            .mapToDouble(Room::getBasePrice)
+            .sum() * numberOfNights;
+
+    double addonsTotalPrice = addons.stream()
+            .mapToDouble(Addon::getBasePrice)
+            .sum();
+
+    totalPrice = roomsTotalPrice + addonsTotalPrice;
+  }
 }

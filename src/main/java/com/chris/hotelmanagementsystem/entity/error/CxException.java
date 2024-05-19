@@ -24,16 +24,12 @@ public class CxException extends RuntimeException {
     this.httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
   }
 
-  public static <T extends CEntity> CxException notFound(Class<T> tClass, Long id) {
-    return new CxException(HttpStatus.NOT_FOUND, String.format("(%s) with (id [%d] not found", tClass.getSimpleName(), id));
-  }
-
   public static CxException forbidden(String message) {
     return new CxException(HttpStatus.FORBIDDEN, message);
   }
 
-  public static CxException badRequest(String message) {
-    return new CxException(HttpStatus.BAD_REQUEST, message);
+  public static CxException badRequest(CEntity entity, String message) {
+    return new CxException(HttpStatus.BAD_REQUEST, String.format("(%s) %s", entity.getClass().getSimpleName(), message));
   }
 
   public static CxException unexpected(Throwable cause) {
@@ -41,7 +37,7 @@ public class CxException extends RuntimeException {
       return cxException;
     return new CxException("Internal Server Error", cause);
   }
-  
+
   public static CxException hardcoded(String message) {
     return new CxException(message);
   }

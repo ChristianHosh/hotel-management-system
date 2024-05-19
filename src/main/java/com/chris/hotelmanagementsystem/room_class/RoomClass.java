@@ -2,6 +2,7 @@ package com.chris.hotelmanagementsystem.room_class;
 
 import com.chris.hotelmanagementsystem.entity.SpecEntity;
 import com.chris.hotelmanagementsystem.feature.Feature;
+import com.chris.hotelmanagementsystem.room_class.room_class_bed.RoomClassBed;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Setter;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @NoArgsConstructor
 @Getter
@@ -26,6 +28,10 @@ public class RoomClass extends SpecEntity {
           inverseJoinColumns = @JoinColumn(name = "c_features_id"))
   private Set<Feature> features = new LinkedHashSet<>();
 
+  @OneToMany(mappedBy = "roomClass", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<RoomClassBed> roomClassBeds = new LinkedHashSet<>();
 
-
+  public Stream<RoomClassBed> getRoomClassBedsStream() {
+    return roomClassBeds.stream();
+  }
 }
