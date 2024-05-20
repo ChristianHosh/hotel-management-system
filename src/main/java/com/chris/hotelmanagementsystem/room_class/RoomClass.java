@@ -1,9 +1,12 @@
 package com.chris.hotelmanagementsystem.room_class;
 
 import com.chris.hotelmanagementsystem.entity.SpecEntity;
+import com.chris.hotelmanagementsystem.entity.SpecResponse;
 import com.chris.hotelmanagementsystem.feature.Feature;
 import com.chris.hotelmanagementsystem.room_class.room_class_bed.RoomClassBed;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,5 +36,42 @@ public class RoomClass extends SpecEntity {
 
   public Stream<RoomClassBed> getRoomClassBedsStream() {
     return roomClassBeds.stream();
+  }
+
+  public static RoomClassResponse fromEntity(RoomClass entity) {
+    return entity == null ? null : new RoomClassResponse(entity);
+  }
+
+  public RoomClassResponse toResponse() {
+    return new RoomClassResponse(this);
+  }
+
+  record RoomClassRequest(
+      @NotNull
+      String name,
+      @NotNull
+      @Min(0)
+      Double basePrice
+  ) {
+  }
+
+  record RoomClassBedRequest(
+      @NotNull
+      Long bedTypeId,
+
+      @NotNull
+      @Min(0)
+      Integer numberOfBeds
+  ) {
+  }
+
+  @Getter
+  public static class RoomClassResponse extends SpecResponse {
+    private final Double basePrice;
+
+    public RoomClassResponse(RoomClass entity) {
+      super(entity);
+      this.basePrice = entity.getBasePrice();
+    }
   }
 }

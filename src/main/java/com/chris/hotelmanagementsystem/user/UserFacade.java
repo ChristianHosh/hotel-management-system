@@ -1,7 +1,7 @@
 package com.chris.hotelmanagementsystem.user;
 
 import com.chris.hotelmanagementsystem.entity.CEntityFacade;
-import com.chris.hotelmanagementsystem.entity.CEntityRepository;
+import com.chris.hotelmanagementsystem.entity.OEntityRepository;
 import com.chris.hotelmanagementsystem.entity.error.CxException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ public class UserFacade extends CEntityFacade<User> {
   private final UserRepository repository;
 
   @Override
-  public CEntityRepository<User> repository() {
+  public OEntityRepository<User> repository() {
     return repository;
   }
 

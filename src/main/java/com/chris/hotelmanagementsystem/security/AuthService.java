@@ -3,6 +3,7 @@ package com.chris.hotelmanagementsystem.security;
 import com.chris.hotelmanagementsystem.entity.error.CxException;
 import com.chris.hotelmanagementsystem.user.User;
 import com.chris.hotelmanagementsystem.user.UserFacade;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,6 +36,7 @@ class AuthService {
     }
   }
 
+  @Transactional
   public AuthController.AuthResponse register(AuthController.RegisterRequest request) {
     var user = new User();
     user.setName(request.name());

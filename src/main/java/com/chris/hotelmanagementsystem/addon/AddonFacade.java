@@ -1,7 +1,7 @@
 package com.chris.hotelmanagementsystem.addon;
 
 import com.chris.hotelmanagementsystem.entity.CEntityFacade;
-import com.chris.hotelmanagementsystem.entity.CEntityRepository;
+import com.chris.hotelmanagementsystem.entity.OEntityRepository;
 import com.chris.hotelmanagementsystem.entity.error.CxException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ public class AddonFacade extends CEntityFacade<Addon> {
   private final AddonRepository repository;
 
   @Override
-  public CEntityRepository<Addon> repository() {
+  public OEntityRepository<Addon> repository() {
     return repository;
   }
 

@@ -1,4 +1,4 @@
-package com.chris.hotelmanagementsystem.floor;
+package com.chris.hotelmanagementsystem.room_class;
 
 import com.chris.hotelmanagementsystem.entity.CEntityFacade;
 import com.chris.hotelmanagementsystem.entity.OEntityRepository;
@@ -7,17 +7,18 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class FloorFacade extends CEntityFacade<Floor> {
+public class RoomClassFacade extends CEntityFacade<RoomClass> {
 
-  private final FloorRepository repository;
+  private final RoomClassRepository repository;
 
   @Override
-  public OEntityRepository<Floor> repository() {
+  public OEntityRepository<RoomClass> repository() {
     return repository;
   }
 
   @Override
-  public Class<Floor> entityClass() {
-    return Floor.class;
+  public Class<RoomClass> entityClass() {
+    return RoomClass.class;
   }
+
 }

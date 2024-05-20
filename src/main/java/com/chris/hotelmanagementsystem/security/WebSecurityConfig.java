@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -80,9 +81,17 @@ public class WebSecurityConfig {
   private void configureAuth(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry auth, AuthorityAuthorizationManager<RequestAuthorizationContext> adminAuth, AuthorityAuthorizationManager<RequestAuthorizationContext> userAuth) {
     auth
         .requestMatchers("/api/auth/*").permitAll()
-
         .requestMatchers("/api/users/*").access(adminAuth)
-        .requestMatchers("/api/addons/*").access(userAuth)
+
+        // all methods require user to be admin, following line overrides GET method to be accessed by anyone else
+        .requestMatchers("/api/addons/*").access(adminAuth)
+        .requestMatchers(HttpMethod.GET, "/api/addons/*").permitAll()
+
+        .requestMatchers("/api/room-classes/*").access(adminAuth)
+        .requestMatchers(HttpMethod.GET, "/api/room-classes/*").permitAll()
+
+        .requestMatchers("/api/room-classes/beds/*").access(adminAuth)
+        .requestMatchers(HttpMethod.GET, "/api/room-classes/beds/*").permitAll()
 
 
         .requestMatchers("/error").permitAll()

@@ -1,6 +1,6 @@
 package com.chris.hotelmanagementsystem.floor;
 
-import com.chris.hotelmanagementsystem.entity.CEntityRepository;
+import com.chris.hotelmanagementsystem.entity.OEntityRepository;
 
-interface FloorRepository extends CEntityRepository<Floor> {
+interface FloorRepository extends OEntityRepository<Floor> {
 }

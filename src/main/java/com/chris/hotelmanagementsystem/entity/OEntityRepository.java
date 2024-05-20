@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
-public interface CEntityRepository<T extends CEntity> extends JpaRepository<T, Long>, JpaSpecificationExecutor<T> {
+public interface OEntityRepository<T extends OEntity> extends JpaRepository<T, Long>, JpaSpecificationExecutor<T> {
 
   @Query("""
       select e from #{#entityName} e

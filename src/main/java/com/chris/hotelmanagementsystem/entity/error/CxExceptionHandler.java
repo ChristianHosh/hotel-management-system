@@ -5,13 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 @Slf4j
 @ControllerAdvice
 public class CxExceptionHandler {
 
-  @ResponseBody
   @ExceptionHandler(CxException.class)
   public ResponseEntity<ApiError> handle(CxException cxException) {
     if (cxException.getHttpStatus() == HttpStatus.INTERNAL_SERVER_ERROR)
@@ -23,9 +22,13 @@ public class CxExceptionHandler {
         .body(ApiError.from(cxException));
   }
 
-  @ResponseBody
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ApiError> handle(Exception exception) {
     return handle(CxException.unexpected(exception));
+  }
+
+  @ExceptionHandler(NoHandlerFoundException.class)
+  public ResponseEntity<ApiError> handle(NoHandlerFoundException noHandlerFoundException) {
+    return handle(CxException.hardcoded(HttpStatus.NOT_FOUND, noHandlerFoundException.getMessage()));
   }
 }

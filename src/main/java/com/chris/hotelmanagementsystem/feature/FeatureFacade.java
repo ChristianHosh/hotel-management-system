@@ -1,7 +1,7 @@
 package com.chris.hotelmanagementsystem.feature;
 
 import com.chris.hotelmanagementsystem.entity.CEntityFacade;
-import com.chris.hotelmanagementsystem.entity.CEntityRepository;
+import com.chris.hotelmanagementsystem.entity.OEntityRepository;
 import com.chris.hotelmanagementsystem.entity.error.CxException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ public class FeatureFacade extends CEntityFacade<Feature> {
   private final FeatureRepository repository;
 
   @Override
-  public CEntityRepository<Feature> repository() {
+  public OEntityRepository<Feature> repository() {
     return repository;
   }
 
