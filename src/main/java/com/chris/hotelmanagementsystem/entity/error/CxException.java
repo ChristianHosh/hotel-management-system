@@ -35,7 +35,7 @@ public class CxException extends RuntimeException {
   public static CxException unexpected(Throwable cause) {
     if (cause instanceof CxException cxException)
       return cxException;
-    return new CxException("Internal Server Error", cause);
+    return new CxException("Internal System Error, please contact your admin", cause);
   }
 
   public static CxException hardcoded(String message) {

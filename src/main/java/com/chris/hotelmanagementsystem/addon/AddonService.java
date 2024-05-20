@@ -17,8 +17,7 @@ class AddonService {
 
   public Addon.AddonResponse deleteAddon(Long id) {
     Addon addon = addonFacade.findById(id);
-    addonFacade.delete(addon);
-    return addon.toResponse();
+    return addonFacade.delete(addon).toResponse();
   }
 
   public Addon.AddonResponse updateAddon(Long id, Addon.AddonRequest request) {

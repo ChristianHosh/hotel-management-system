@@ -29,8 +29,9 @@ public abstract class CEntityFacade<T extends CEntity> {
 
   }
 
-  public void delete(T entity) {
+  public T delete(T entity) {
     repository().delete(entity);
+    return entity;
   }
 
   public T findById(Long id) {

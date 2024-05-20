@@ -22,10 +22,10 @@ public class Floor extends CEntity {
   private Integer floorNumber;
 
   public static FloorResponse fromEntity(Floor floor) {
-    return floor == null ? null : floor.toResponse();
+    return floor == null ? null : new FloorResponse(floor);
   }
 
-  private FloorResponse toResponse() {
+  public FloorResponse toResponse() {
     return new FloorResponse(this);
   }
 

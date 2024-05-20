@@ -1,4 +1,4 @@
-package com.chris.hotelmanagementsystem.feature;
+package com.chris.hotelmanagementsystem.floor;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -11,35 +11,35 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @ResponseStatus(HttpStatus.OK)
-@RequestMapping(value = "/api/features")
-class FeatureController {
+@RequestMapping(value = "/api/floors")
+class FloorController {
 
-  private final FeatureService service;
+  private final FloorService service;
 
   @GetMapping
   @Operation(
       method = "GET",
-      summary = "Get features page",
-      description = "Get features page",
+      summary = "Get floors page",
+      description = "Get floors page",
       responses = {
           @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
           @ApiResponse(responseCode = "401", description = "Unauthorized"),
           @ApiResponse(responseCode = "403", description = "Forbidden"),
       }
   )
-  public Page<Feature.FeatureResponse> getFeatures(
+  public Page<Floor.FloorResponse> getFloors(
       @RequestParam(name = "page", defaultValue = "0") int page,
       @RequestParam(name = "size", defaultValue = "10") int size,
       @RequestParam(name = "query", defaultValue = "") String query
   ) {
-    return service.getFeatures(page, size, query);
+    return service.getFloors(page, size, query);
   }
 
   @PostMapping
   @Operation(
       method = "POST",
-      summary = "Create feature",
-      description = "Create feature",
+      summary = "Create floor",
+      description = "Create floor",
       responses = {
           @ApiResponse(responseCode = "201", description = "Created", useReturnTypeSchema = true),
           @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -47,15 +47,16 @@ class FeatureController {
           @ApiResponse(responseCode = "400", description = "Bad Request")
       }
   )
-  public Feature.FeatureResponse createFeature(@RequestBody @Valid Feature.FeatureRequest request) {
-    return service.createFeature(request);
+  public Floor.FloorResponse createFloor(@RequestBody @Valid Floor.FloorRequest request) {
+    return service.createFloor(request);
   }
+
 
   @GetMapping("/{id}")
   @Operation(
       method = "GET",
-      summary = "Get feature by id",
-      description = "Get feature by id",
+      summary = "Get floor by id",
+      description = "Get floor by id",
       responses = {
           @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
           @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -63,31 +64,32 @@ class FeatureController {
           @ApiResponse(responseCode = "404", description = "Not Found")
       }
   )
-  public Feature.FeatureResponse getFeature(@PathVariable Long id) {
-    return service.getFeature(id);
+  public Floor.FloorResponse getFloor(@PathVariable Long id) {
+    return service.getFloor(id);
   }
 
   @PutMapping("/{id}")
   @Operation(
       method = "PUT",
-      summary = "Update feature by id",
-      description = "Update feature by id",
+      summary = "Update floor by id",
+      description = "Update floor by id",
       responses = {
           @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
+          @ApiResponse(responseCode = "400", description = "Bad Request"),
           @ApiResponse(responseCode = "401", description = "Unauthorized"),
           @ApiResponse(responseCode = "403", description = "Forbidden"),
           @ApiResponse(responseCode = "404", description = "Not Found")
       }
   )
-  public Feature.FeatureResponse updateFeature(@PathVariable Long id, @RequestBody @Valid Feature.FeatureRequest request) {
-    return service.updateFeature(id, request);
+  public Floor.FloorResponse updateFloor(@PathVariable Long id, @RequestBody @Valid Floor.FloorRequest request) {
+    return service.updateFloor(id, request);
   }
 
   @DeleteMapping("/{id}")
   @Operation(
       method = "DELETE",
-      summary = "Delete feature by id",
-      description = "Delete feature by id",
+      summary = "Delete floor by id",
+      description = "Delete floor by id",
       responses = {
           @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
           @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -95,7 +97,8 @@ class FeatureController {
           @ApiResponse(responseCode = "404", description = "Not Found")
       }
   )
-  public Feature.FeatureResponse deleteFeature(@PathVariable Long id) {
-    return service.deleteFeature(id);
+  public Floor.FloorResponse deleteFloor(@PathVariable Long id) {
+    return service.deleteFloor(id);
   }
+
 }

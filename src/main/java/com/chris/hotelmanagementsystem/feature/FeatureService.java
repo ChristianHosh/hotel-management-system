@@ -17,8 +17,7 @@ class FeatureService {
 
   public Feature.FeatureResponse deleteFeature(Long id) {
     Feature feature = featureFacade.findById(id);
-    featureFacade.delete(feature);
-    return feature.toResponse();
+    return featureFacade.delete(feature).toResponse();
   }
 
   public Feature.FeatureResponse updateFeature(Long id, Feature.FeatureRequest request) {

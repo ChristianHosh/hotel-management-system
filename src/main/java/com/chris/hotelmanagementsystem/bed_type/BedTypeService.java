@@ -19,8 +19,7 @@ class BedTypeService {
 
   public SpecResponse deleteBedType(Long id) {
     BedType bedType = bedTypeFacade.findById(id);
-    bedTypeFacade.delete(bedType);
-    return bedType.toResponse();
+    return bedTypeFacade.delete(bedType).toResponse();
   }
 
   public SpecResponse updateBedType(Long id, SpecRequest request) {
