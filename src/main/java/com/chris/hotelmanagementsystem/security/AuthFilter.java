@@ -1,6 +1,8 @@
 package com.chris.hotelmanagementsystem.security;
 
+import com.chris.hotelmanagementsystem.entity.error.ApiError;
 import com.chris.hotelmanagementsystem.entity.error.CxException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,13 +46,25 @@ public class AuthFilter extends OncePerRequestFilter {
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
       }
-    } catch (Exception e) {
-      CxException exception = CxException.unauthorized("invalid token");
-      exception.addSuppressed(e);
-      throw exception;
+    } catch (CxException e) {
+      ApiError error = ApiError.from(e);
+      writeError(response, error);
+      return;
+    }catch (Exception e) {
+      ApiError error = ApiError.from(CxException.unexpected(e));
+      writeError(response, error);
+      return;
     }
 
     filterChain.doFilter(request, response);
+  }
+
+  private void writeError(HttpServletResponse response, ApiError error) throws IOException {
+    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+    response.setStatus(error.status());
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.writeValue(response.getOutputStream(), error);
   }
 
   private String parseJwt(HttpServletRequest request) {

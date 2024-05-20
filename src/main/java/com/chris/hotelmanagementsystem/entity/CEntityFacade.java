@@ -1,7 +1,7 @@
 package com.chris.hotelmanagementsystem.entity;
 
 import com.chris.hotelmanagementsystem.entity.error.CxException;
-import org.hibernate.type.internal.ParameterizedTypeImpl;
+import java.lang.reflect.ParameterizedType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,7 +13,13 @@ public abstract class CEntityFacade<T extends OEntity> {
 
   @SuppressWarnings("unchecked")
   public final Class<T> entityClass() {
-    return (Class<T>) ((ParameterizedTypeImpl) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    var genericSuperclass = getClass().getGenericSuperclass();
+    var parameterizedType = genericSuperclass instanceof ParameterizedType type ? type : null;
+    if (parameterizedType != null) {
+      return (Class<T>) parameterizedType.getActualTypeArguments()[0];
+    } else {
+      return (Class<T>) CEntity.class;
+    }
   }
 
   public final T save(T entity) {
