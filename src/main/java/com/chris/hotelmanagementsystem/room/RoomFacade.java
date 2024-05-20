@@ -1,4 +1,4 @@
-package com.chris.hotelmanagementsystem.room_class;
+package com.chris.hotelmanagementsystem.room;
 
 import com.chris.hotelmanagementsystem.entity.CEntityFacade;
 import lombok.Getter;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 @Getter
 @Service
 @RequiredArgsConstructor
-public class RoomClassFacade extends CEntityFacade<RoomClass> {
+public class RoomFacade extends CEntityFacade<Room> {
 
-  private final RoomClassRepository repository;
+  private final RoomRepository repository;
 
 }

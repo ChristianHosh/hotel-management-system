@@ -1,26 +1,17 @@
 package com.chris.hotelmanagementsystem.bed_type;
 
 import com.chris.hotelmanagementsystem.entity.CEntityFacade;
-import com.chris.hotelmanagementsystem.entity.OEntityRepository;
 import com.chris.hotelmanagementsystem.entity.error.CxException;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+@Getter
 @Service
 @RequiredArgsConstructor
 public class BedTypeFacade extends CEntityFacade<BedType> {
 
   private final BedTypeRepository repository;
-
-  @Override
-  public OEntityRepository<BedType> repository() {
-    return repository;
-  }
-
-  @Override
-  public Class<BedType> entityClass() {
-    return BedType.class;
-  }
 
   public BedType findBedTypeByName(String name) {
     return repository.findBedTypeByName(name)
