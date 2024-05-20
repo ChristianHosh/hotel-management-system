@@ -10,20 +10,20 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class BedTypeFacade extends CEntityFacade<BedType> {
 
-    private final BedTypeRepository repository;
+  private final BedTypeRepository repository;
 
-    @Override
-    public CEntityRepository<BedType> repository() {
-        return repository;
-    }
+  @Override
+  public CEntityRepository<BedType> repository() {
+    return repository;
+  }
 
-    @Override
-    public Class<BedType> entityClass() {
-        return BedType.class;
-    }
+  @Override
+  public Class<BedType> entityClass() {
+    return BedType.class;
+  }
 
-    public BedType findBedTypeByName(String name) {
-        return repository.findBedTypeByName(name)
-                .orElseThrow(() -> CxException.notFound(entityClass(), "name", name));
-    }
+  public BedType findBedTypeByName(String name) {
+    return repository.findBedTypeByName(name)
+        .orElseThrow(() -> CxException.notFound(entityClass(), "name", name));
+  }
 }

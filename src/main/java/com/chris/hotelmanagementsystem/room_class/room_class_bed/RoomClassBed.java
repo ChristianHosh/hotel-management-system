@@ -46,10 +46,10 @@ public class RoomClassBed implements Serializable {
   }
 
   public record RoomClassBedId(
-          @Column(name = "c_room_class_id", nullable = false)
-          Long roomClassId,
-          @Column(name = "c_bed_type_id", nullable = false)
-          Long bedTypeId
+      @Column(name = "c_room_class_id", nullable = false)
+      Long roomClassId,
+      @Column(name = "c_bed_type_id", nullable = false)
+      Long bedTypeId
   ) implements Serializable {
     @Override
     public boolean equals(Object object) {

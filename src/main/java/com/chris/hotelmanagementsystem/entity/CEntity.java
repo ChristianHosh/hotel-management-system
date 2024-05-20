@@ -126,9 +126,6 @@ public abstract class CEntity implements Serializable, Comparable<CEntity> {
     return specifications;
   }
 
-  record SpecWrapper<T extends CEntity>(Specification<T> spec, String fieldName, Object value) {
-  }
-
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null) return false;
@@ -154,5 +151,8 @@ public abstract class CEntity implements Serializable, Comparable<CEntity> {
 
   public int compareToImpl(@NotNull CEntity o) {
     return Long.compare(this.id, o.id);
+  }
+
+  record SpecWrapper<T extends CEntity>(Specification<T> spec, String fieldName, Object value) {
   }
 }

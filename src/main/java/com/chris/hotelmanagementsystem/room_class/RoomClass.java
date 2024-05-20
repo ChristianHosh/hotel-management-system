@@ -24,8 +24,8 @@ public class RoomClass extends SpecEntity {
 
   @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
   @JoinTable(name = "t_room_class_features",
-          joinColumns = @JoinColumn(name = "c_room_class_id"),
-          inverseJoinColumns = @JoinColumn(name = "c_features_id"))
+      joinColumns = @JoinColumn(name = "c_room_class_id"),
+      inverseJoinColumns = @JoinColumn(name = "c_features_id"))
   private Set<Feature> features = new LinkedHashSet<>();
 
   @OneToMany(mappedBy = "roomClass", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -17,10 +17,10 @@ import lombok.Setter;
 @Setter
 @MappedSuperclass
 public abstract class SpecEntity extends CEntity {
-  
+
   @Keyword
   @Column(name = "c_name", nullable = false)
   private String name;
-  
-  
+
+
 }

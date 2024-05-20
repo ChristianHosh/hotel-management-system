@@ -3,7 +3,6 @@ package com.chris.hotelmanagementsystem.security;
 import com.chris.hotelmanagementsystem.entity.error.ApiError;
 import com.chris.hotelmanagementsystem.entity.error.CxException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

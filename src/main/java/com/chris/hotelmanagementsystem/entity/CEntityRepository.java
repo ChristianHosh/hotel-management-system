@@ -11,9 +11,9 @@ import org.springframework.data.repository.NoRepositoryBean;
 public interface CEntityRepository<T extends CEntity> extends JpaRepository<T, Long>, JpaSpecificationExecutor<T> {
 
   @Query("""
-          select e from #{#entityName} e
-          where e.keyword ilike concat('%', :query, '%')
-          """)
+      select e from #{#entityName} e
+      where e.keyword ilike concat('%', :query, '%')
+      """)
   Page<T> findAll(String query, Pageable pageable);
 
 }

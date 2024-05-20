@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserFacade extends CEntityFacade<User> {
-  
+
   private final UserRepository repository;
 
   @Override
@@ -24,6 +24,6 @@ public class UserFacade extends CEntityFacade<User> {
 
   public User findByUsername(String username) {
     return repository.findByUsername(username)
-            .orElseThrow(() -> CxException.notFound(entityClass(), "username", username));
+        .orElseThrow(() -> CxException.notFound(entityClass(), "username", username));
   }
 }

@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "t_room", uniqueConstraints = {
-        @UniqueConstraint(name = "uc_room_c_room_number", columnNames = {"c_room_number", "c_floor_id"})
+    @UniqueConstraint(name = "uc_room_c_room_number", columnNames = {"c_room_number", "c_floor_id"})
 })
 public class Room extends CEntity {
 

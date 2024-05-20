@@ -21,19 +21,19 @@ public class Floor extends CEntity {
   @Column(name = "c_floor_number", nullable = false)
   private Integer floorNumber;
 
-  public record FloorRequest(
-          @NotNull
-          @Min(0)
-          Integer floorNumber
-  ) {
-  }
-
   public static FloorResponse fromEntity(Floor floor) {
     return floor == null ? null : floor.toResponse();
   }
 
   private FloorResponse toResponse() {
     return new FloorResponse(this);
+  }
+
+  public record FloorRequest(
+      @NotNull
+      @Min(0)
+      Integer floorNumber
+  ) {
   }
 
   @Getter

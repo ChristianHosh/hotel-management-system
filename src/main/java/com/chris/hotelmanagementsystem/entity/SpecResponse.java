@@ -7,7 +7,7 @@ public class SpecResponse extends CEntityResponse {
 
   private final String name;
 
-  protected SpecResponse(SpecEntity entity) {
+  public SpecResponse(SpecEntity entity) {
     super(entity);
     this.name = entity.getName();
   }

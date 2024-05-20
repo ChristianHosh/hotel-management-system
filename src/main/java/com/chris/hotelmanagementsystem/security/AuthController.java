@@ -11,26 +11,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @ResponseStatus(HttpStatus.OK)
-@RequestMapping("/api/auth")
+@RequestMapping(value = "/api/auth")
 class AuthController {
 
   private final AuthService service;
-
-  record LoginRequest(String username, String password) {}
-  record AuthResponse(String token, User.UserResponse user) {}
-  record RegisterRequest(
-          @NotNull
-          @Size(min = 6, max = 40)
-          String name,
-
-          @NotNull
-          @Size(min = 6, max = 40)
-          String username,
-
-          @NotNull
-          @Size(min = 6, max = 40)
-          String password
-  ) {}
 
   @PostMapping("/login")
   public AuthResponse login(@RequestBody @Valid LoginRequest request) {
@@ -40,5 +24,26 @@ class AuthController {
   @PostMapping("/register")
   public AuthResponse register(@RequestBody @Valid RegisterRequest request) {
     return service.register(request);
+  }
+
+  record LoginRequest(String username, String password) {
+  }
+
+  record AuthResponse(String token, User.UserResponse user) {
+  }
+
+  record RegisterRequest(
+      @NotNull
+      @Size(min = 6, max = 40)
+      String name,
+
+      @NotNull
+      @Size(min = 6, max = 40)
+      String username,
+
+      @NotNull
+      @Size(min = 6, max = 40)
+      String password
+  ) {
   }
 }

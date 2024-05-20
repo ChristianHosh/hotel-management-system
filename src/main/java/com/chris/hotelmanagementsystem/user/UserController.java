@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @ResponseStatus(HttpStatus.OK)
-@RequestMapping(value = "/api/users", consumes = "application/json", produces = "application/json")
+@RequestMapping("/api/users")
 class UserController {
-  
+
   private final UserService service;
-  
+
   @GetMapping
   @Operation(
       method = "GET",
@@ -34,7 +34,7 @@ class UserController {
   ) {
     return service.getUsers(page, size, query);
   }
-  
+
   @PostMapping
   @Operation(
       method = "POST",
@@ -50,7 +50,7 @@ class UserController {
   public User.UserResponse createUser(@RequestBody @Valid User.UserRequest request) {
     return service.createUser(request);
   }
-  
+
   @GetMapping("/{id}")
   @Operation(
       method = "GET",

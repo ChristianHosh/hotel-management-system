@@ -5,8 +5,8 @@ import jakarta.validation.constraints.Size;
 
 public record SpecRequest(
 
-        @NotNull
-        @Size(max = 255)
-        String name
+    @NotNull
+    @Size(max = 255)
+    String name
 ) {
 }

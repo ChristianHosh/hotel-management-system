@@ -18,29 +18,27 @@ import lombok.Setter;
 @Entity
 @Table(name = "t_user")
 public class User extends SpecEntity {
-  
-  public enum Role {
-    ADMIN, CUSTOMER
-  }
 
   @Unique
   @Keyword
   @Column(name = "c_username", nullable = false, length = 40)
   private String username;
-
   @Column(name = "c_password", nullable = false, length = 120)
   private String password;
-
   @Enumerated
   @Column(name = "c_role", nullable = false)
   private Role role;
+
+  public static UserResponse fromEntity(User user) {
+    return user == null ? null : new UserResponse(user);
+  }
 
   public UserResponse toResponse() {
     return new UserResponse(this);
   }
 
-  public static UserResponse fromEntity(User user) {
-    return user == null ? null : new UserResponse(user);
+  public enum Role {
+    ADMIN, CUSTOMER
   }
 
   @Getter
@@ -54,7 +52,7 @@ public class User extends SpecEntity {
       this.role = user.getRole().name().toLowerCase();
     }
   }
-  
+
   public record UserRequest(
       @NotNull
       @Size(min = 6, max = 40)
@@ -67,10 +65,10 @@ public class User extends SpecEntity {
       @NotNull
       @Size(min = 6, max = 40)
       String password,
-      
+
       @NotNull
       Role role
   ) {
-    
+
   }
 }

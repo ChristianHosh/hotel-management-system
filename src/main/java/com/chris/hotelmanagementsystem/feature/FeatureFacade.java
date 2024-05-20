@@ -10,20 +10,20 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FeatureFacade extends CEntityFacade<Feature> {
 
-    private final FeatureRepository repository;
+  private final FeatureRepository repository;
 
-    @Override
-    public CEntityRepository<Feature> repository() {
-        return repository;
-    }
+  @Override
+  public CEntityRepository<Feature> repository() {
+    return repository;
+  }
 
-    @Override
-    public Class<Feature> entityClass() {
-        return Feature.class;
-    }
+  @Override
+  public Class<Feature> entityClass() {
+    return Feature.class;
+  }
 
-    public Feature findFeatureByName(String name) {
-        return repository.findFeatureByName(name)
-                .orElseThrow(() -> CxException.notFound(entityClass(), "name", name));
-    }
+  public Feature findFeatureByName(String name) {
+    return repository.findFeatureByName(name)
+        .orElseThrow(() -> CxException.notFound(entityClass(), "name", name));
+  }
 }

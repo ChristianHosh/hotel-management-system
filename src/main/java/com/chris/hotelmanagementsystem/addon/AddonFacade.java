@@ -10,20 +10,20 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AddonFacade extends CEntityFacade<Addon> {
 
-    private final AddonRepository repository;
+  private final AddonRepository repository;
 
-    @Override
-    public CEntityRepository<Addon> repository() {
-        return repository;
-    }
+  @Override
+  public CEntityRepository<Addon> repository() {
+    return repository;
+  }
 
-    @Override
-    public Class<Addon> entityClass() {
-        return Addon.class;
-    }
+  @Override
+  public Class<Addon> entityClass() {
+    return Addon.class;
+  }
 
-    public Addon findAddonByName(String name) { 
-        return repository.findAddonByName(name)
-                .orElseThrow(() -> CxException.notFound(entityClass(), "name", name));
-    }
+  public Addon findAddonByName(String name) {
+    return repository.findAddonByName(name)
+        .orElseThrow(() -> CxException.notFound(entityClass(), "name", name));
+  }
 }

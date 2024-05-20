@@ -24,44 +24,32 @@ import java.util.Set;
 @Table(name = "t_reservation")
 public class Reservation extends CEntity {
 
-  enum PaymentStatus {
-    PENDING_PAYMENT, PAID, CANCELED
-  }
-
   @Column(name = "c_number_of_adults", nullable = false)
   private Integer numberOfAdults;
-
   @Column(name = "c_number_of_children", nullable = false)
   private Integer numberOfChildren;
-
   @Column(name = "c_check_in_date", nullable = false)
   private LocalDate checkInDate;
-
   @Column(name = "c_check_out_date")
   private LocalDate checkOutDate;
-
   @Column(name = "c_total_price", nullable = false)
   private Double totalPrice;
-
   @Enumerated
   @Column(name = "c_payment_status", nullable = false)
   private PaymentStatus paymentStatus;
-
   @Keyword
   @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}, optional = false)
   @JoinColumn(name = "c_guest_id", nullable = false)
   private User guest;
-
   @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
   @JoinTable(name = "t_reservation_rooms",
-          joinColumns = @JoinColumn(name = "c_reservation_id"),
-          inverseJoinColumns = @JoinColumn(name = "c_room_id"))
+      joinColumns = @JoinColumn(name = "c_reservation_id"),
+      inverseJoinColumns = @JoinColumn(name = "c_room_id"))
   private Set<Room> rooms = new LinkedHashSet<>();
-
   @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
   @JoinTable(name = "t_reservation_addons",
-          joinColumns = @JoinColumn(name = "c_reservation_id"),
-          inverseJoinColumns = @JoinColumn(name = "c_addon_id"))
+      joinColumns = @JoinColumn(name = "c_reservation_id"),
+      inverseJoinColumns = @JoinColumn(name = "c_addon_id"))
   private Set<Addon> addons = new LinkedHashSet<>();
 
   @Override
@@ -82,10 +70,10 @@ public class Reservation extends CEntity {
 
     // check if the number of adults and children is less than the number of beds in the rooms
     var roomsSummary = rooms.stream()
-            .map(Room::getRoomClass)
-            .flatMap(RoomClass::getRoomClassBedsStream)
-            .mapToInt(RoomClassBed::getNumberOfBeds)
-            .summaryStatistics();
+        .map(Room::getRoomClass)
+        .flatMap(RoomClass::getRoomClassBedsStream)
+        .mapToInt(RoomClassBed::getNumberOfBeds)
+        .summaryStatistics();
 
     if (numberOfAdults + numberOfChildren > roomsSummary.getSum())
       throw CxException.badRequest(this, String.format("number of adults and children cannot be more than [%d]", roomsSummary.getSum()));
@@ -98,13 +86,17 @@ public class Reservation extends CEntity {
     // calculate the total price of the reservation
     int numberOfNights = checkInDate.until(checkOutDate).getDays();
     double roomsTotalPrice = rooms.stream()
-            .mapToDouble(Room::getBasePrice)
-            .sum() * numberOfNights;
+        .mapToDouble(Room::getBasePrice)
+        .sum() * numberOfNights;
 
     double addonsTotalPrice = addons.stream()
-            .mapToDouble(Addon::getBasePrice)
-            .sum();
+        .mapToDouble(Addon::getBasePrice)
+        .sum();
 
     totalPrice = roomsTotalPrice + addonsTotalPrice;
+  }
+
+  enum PaymentStatus {
+    PENDING_PAYMENT, PAID, CANCELED
   }
 }

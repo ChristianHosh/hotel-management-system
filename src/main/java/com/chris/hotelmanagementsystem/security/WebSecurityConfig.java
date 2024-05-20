@@ -67,27 +67,26 @@ public class WebSecurityConfig {
     userAuth.setRoleHierarchy(roleHierarchy());
 
     http.cors(Customizer.withDefaults())
-            .csrf(AbstractHttpConfigurer::disable)
-            .authenticationProvider(authenticationProvider())
-            .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-            .exceptionHandling(e -> e.authenticationEntryPoint(authEntryPoint))
-            .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> configureAuth(auth, adminAuth, userAuth));
+        .csrf(AbstractHttpConfigurer::disable)
+        .authenticationProvider(authenticationProvider())
+        .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+        .exceptionHandling(e -> e.authenticationEntryPoint(authEntryPoint))
+        .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(auth -> configureAuth(auth, adminAuth, userAuth));
 
     return configure(http).build();
   }
 
   private void configureAuth(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry auth, AuthorityAuthorizationManager<RequestAuthorizationContext> adminAuth, AuthorityAuthorizationManager<RequestAuthorizationContext> userAuth) {
     auth
-            .requestMatchers("/api/auth/*").permitAll()
+        .requestMatchers("/api/auth/*").permitAll()
 
-            .requestMatchers("/api/users/*").access(adminAuth)
-            .requestMatchers("/api/addons/*").access(userAuth)
+        .requestMatchers("/api/users/*").access(adminAuth)
+        .requestMatchers("/api/addons/*").access(userAuth)
 
 
-
-            .requestMatchers("/error").permitAll()
-            .anyRequest().authenticated();
+        .requestMatchers("/error").permitAll()
+        .anyRequest().authenticated();
   }
 
   protected HttpSecurity configure(HttpSecurity http) {
