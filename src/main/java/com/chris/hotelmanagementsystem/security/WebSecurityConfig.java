@@ -82,6 +82,8 @@ public class WebSecurityConfig {
             .requestMatchers("/api/auth/*").permitAll()
 
             .requestMatchers("/api/users/*").access(adminAuth)
+            .requestMatchers("/api/addons/*").access(userAuth)
+
 
 
             .requestMatchers("/error").permitAll()

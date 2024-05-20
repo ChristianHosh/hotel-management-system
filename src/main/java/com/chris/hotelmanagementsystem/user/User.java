@@ -1,7 +1,7 @@
 package com.chris.hotelmanagementsystem.user;
 
 import com.chris.hotelmanagementsystem.entity.SpecEntity;
-import com.chris.hotelmanagementsystem.entity.SpecEntityResponse;
+import com.chris.hotelmanagementsystem.entity.SpecResponse;
 import com.chris.hotelmanagementsystem.entity.annotations.Keyword;
 import com.chris.hotelmanagementsystem.entity.annotations.Unique;
 import jakarta.persistence.Column;
@@ -44,7 +44,7 @@ public class User extends SpecEntity {
   }
 
   @Getter
-  public static class UserResponse extends SpecEntityResponse {
+  public static class UserResponse extends SpecResponse {
     private final String role;
     private final String username;
 
