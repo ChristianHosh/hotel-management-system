@@ -1,6 +1,7 @@
 package com.chris.hotelmanagementsystem.security;
 
 import com.chris.hotelmanagementsystem.user.User;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+@Getter
 @RequiredArgsConstructor
 class UserDetailsImpl implements UserDetails {
 
@@ -57,5 +59,10 @@ class UserDetailsImpl implements UserDetails {
     if (obj instanceof UserDetailsImpl details)
       return Objects.equals(this.user, details.user);
     return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(user);
   }
 }
