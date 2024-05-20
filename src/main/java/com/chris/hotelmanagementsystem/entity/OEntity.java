@@ -102,12 +102,23 @@ public abstract class OEntity implements Serializable {
       field.trySetAccessible();
       if (field.isAnnotationPresent(Unique.class)) {
         Object thisValue = field.get(this);
-        Specification<T> tSpecification = (root, query, builder) ->
-            builder.and(builder.equal(root.get(field.getName()), thisValue), builder.notEqual(root.get("id"), this.getId()));
+        Specification<T> tSpecification = (root, query, builder) -> {
+          if (isNew()) {
+            return builder.equal(root.get(field.getName()), thisValue);
+          } else {
+            return builder.and(
+                builder.equal(root.get(field.getName()), thisValue),
+                builder.notEqual(root.get("id"), this.getId()));
+          }
+        };
         specifications.add(new SpecWrapper<>(tSpecification, field.getName(), thisValue));
       }
     }
     return specifications;
+  }
+
+  private boolean isNew() {
+    return this.getId() == null;
   }
 
   public boolean equals(Object o) {

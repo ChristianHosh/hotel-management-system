@@ -23,8 +23,10 @@ public class User extends SpecEntity {
   @Keyword
   @Column(name = "c_username", nullable = false, length = 40)
   private String username;
+
   @Column(name = "c_password", nullable = false, length = 120)
   private String password;
+
   @Enumerated
   @Column(name = "c_role", nullable = false)
   private Role role;

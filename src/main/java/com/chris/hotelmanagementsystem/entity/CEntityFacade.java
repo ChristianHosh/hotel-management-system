@@ -16,7 +16,7 @@ public abstract class CEntityFacade<T extends OEntity> {
     try {
       List<OEntity.SpecWrapper<T>> checkUnique = entity.checkUnique();
       for (OEntity.SpecWrapper<T> spec : checkUnique) {
-        if (repository().exists(spec.spec())) {
+        if (repository().count(spec.spec()) > 0) {
           throw CxException.duplicate(entityClass(), spec.fieldName(), spec.value());
         }
       }
