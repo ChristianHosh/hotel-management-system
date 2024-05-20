@@ -1,5 +1,7 @@
 package com.chris.hotelmanagementsystem.bed_type;
 
+import com.chris.hotelmanagementsystem.entity.SpecRequest;
+import com.chris.hotelmanagementsystem.entity.SpecResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
@@ -27,7 +29,7 @@ class BedTypeController {
           @ApiResponse(responseCode = "403", description = "Forbidden"),
       }
   )
-  public Page<BedType.BedTypeResponse> getBedTypes(
+  public Page<SpecResponse> getBedTypes(
       @RequestParam(name = "page", defaultValue = "0") int page,
       @RequestParam(name = "size", defaultValue = "10") int size,
       @RequestParam(name = "query", defaultValue = "") String query
@@ -47,7 +49,7 @@ class BedTypeController {
           @ApiResponse(responseCode = "400", description = "Bad Request")
       }
   )
-  public BedType.BedTypeResponse createBedType(@RequestBody @Valid BedType.BedTypeRequest request) {
+  public SpecResponse createBedType(@RequestBody @Valid SpecRequest request) {
     return service.createBedType(request);
   }
 
@@ -63,7 +65,7 @@ class BedTypeController {
           @ApiResponse(responseCode = "404", description = "Not Found")
       }
   )
-  public BedType.BedTypeResponse getBedType(@PathVariable Long id) {
+  public SpecResponse getBedType(@PathVariable Long id) {
     return service.getBedType(id);
   }
 
@@ -79,7 +81,7 @@ class BedTypeController {
           @ApiResponse(responseCode = "404", description = "Not Found")
       }
   )
-  public BedType.BedTypeResponse updateBedType(@PathVariable Long id, @RequestBody @Valid BedType.BedTypeRequest request) {
+  public SpecResponse updateBedType(@PathVariable Long id, @RequestBody @Valid SpecRequest request) {
     return service.updateBedType(id, request);
   }
 
@@ -95,7 +97,7 @@ class BedTypeController {
           @ApiResponse(responseCode = "404", description = "Not Found")
       }
   )
-  public BedType.BedTypeResponse deleteBedType(@PathVariable Long id) {
+  public SpecResponse deleteBedType(@PathVariable Long id) {
     return service.deleteBedType(id);
   }
 }
