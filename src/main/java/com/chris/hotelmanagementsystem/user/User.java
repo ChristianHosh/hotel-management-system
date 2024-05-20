@@ -20,7 +20,7 @@ import lombok.Setter;
 public class User extends SpecEntity {
   
   public enum Role {
-    ADMIN, USER
+    ADMIN, CUSTOMER
   }
 
   @Unique

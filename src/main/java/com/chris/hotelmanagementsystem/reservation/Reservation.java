@@ -68,8 +68,8 @@ public class Reservation extends CEntity {
   protected void validate() {
     super.validate();
 
-    if (guest.getRole() != User.Role.USER)
-      throw CxException.badRequest(this, "guest cannot be staff");
+    if (guest.getRole() != User.Role.CUSTOMER)
+      throw CxException.badRequest(this, "guest must be a customer");
 
     if (checkInDate.isAfter(checkOutDate))
       throw CxException.badRequest(this, "check-in date cannot be after check-out date");
