@@ -5,8 +5,6 @@ import com.chris.hotelmanagementsystem.entity.annotations.Unique;
 import io.swagger.v3.core.util.ReflectionUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -44,12 +42,13 @@ public abstract class OEntity implements Serializable {
   @Column(name = "c_keyword")
   private String keyword;
 
-  @PrePersist
-  @PreUpdate
-  private void prePersist() {
+  @SuppressWarnings("unchecked")
+  final <T extends OEntity> T save() {
     preSave();
 
     generateKeyword();
+
+    return (T) this;
   }
 
   private void generateKeyword() {

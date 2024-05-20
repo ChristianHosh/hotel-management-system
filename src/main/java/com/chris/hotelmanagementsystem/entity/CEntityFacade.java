@@ -22,7 +22,7 @@ public abstract class CEntityFacade<T extends OEntity> {
       }
 
       entity.doValidate();
-      return repository().save(entity);
+      return repository().save(entity.save());
     } catch (Exception e) {
       throw CxException.unexpected(e);
     }
