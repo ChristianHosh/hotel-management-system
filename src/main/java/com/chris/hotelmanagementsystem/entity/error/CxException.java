@@ -42,6 +42,10 @@ public class CxException extends RuntimeException {
     return new CxException(message);
   }
 
+  public static CxException hardcoded(HttpStatus httpStatus, String message) {
+    return new CxException(httpStatus, message);
+  }
+
 
   public static <T extends CEntity> Exception duplicate(Class<T> tClass, String field, Object value) {
     return new CxException(HttpStatus.CONFLICT, String.format("(%s) duplicate value for (%s): [%s]", tClass.getSimpleName(), field, value));

@@ -1,15 +1,10 @@
 package com.chris.hotelmanagementsystem.entity.error;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.time.LocalDateTime;
-
 public record ApiError(
     int status,
     String message,
     String details,
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime timestamp
+    long timestamp
 ) {
 
   public static ApiError from(CxException e) {
@@ -17,7 +12,7 @@ public record ApiError(
         e.getHttpStatus().value(),
         e.getHttpStatus().getReasonPhrase(),
         e.getMessage(),
-        LocalDateTime.now()
+        System.currentTimeMillis()
     );
   }
 }
