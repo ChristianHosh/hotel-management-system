@@ -1,5 +1,6 @@
 package com.chris.hotelmanagementsystem.room_class;
 
+import com.chris.hotelmanagementsystem.room.Room;
 import com.chris.hotelmanagementsystem.room_class.room_class_bed.RoomClassBed;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -140,6 +141,27 @@ class RoomClassController {
       @RequestParam(name = "query", defaultValue = "") String query
   ) {
     return service.getRoomClassBeds(id, page, size, query);
+  }
+
+  @GetMapping("/{id}/rooms")
+  @Operation(
+      method = "GET",
+      summary = "Get room class rooms",
+      description = "Get room class rooms for the specified room class",
+      responses = {
+          @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
+          @ApiResponse(responseCode = "401", description = "Unauthorized"),
+          @ApiResponse(responseCode = "403", description = "Forbidden"),
+          @ApiResponse(responseCode = "404", description = "Not Found")
+      }
+  )
+  public Page<Room.RoomResponse> getRoomsByRoomClass(
+      @PathVariable Long id,
+      @RequestParam(name = "page", defaultValue = "0") int page,
+      @RequestParam(name = "size", defaultValue = "10") int size,
+      @RequestParam(name = "query", defaultValue = "") String query
+  ) {
+    return service.getRoomsByRoomClass(id, page, size, query);
   }
 
 }

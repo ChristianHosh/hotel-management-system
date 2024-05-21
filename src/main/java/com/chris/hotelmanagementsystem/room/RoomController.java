@@ -1,6 +1,5 @@
-package com.chris.hotelmanagementsystem.floor;
+package com.chris.hotelmanagementsystem.room;
 
-import com.chris.hotelmanagementsystem.room.Room;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
@@ -12,35 +11,35 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @ResponseStatus(HttpStatus.OK)
-@RequestMapping(value = "/api/floors")
-class FloorController {
-
-  private final FloorService service;
+@RequestMapping(value = "/api/rooms")
+class RoomController {
+  
+  private final RoomService service;
 
   @GetMapping
   @Operation(
       method = "GET",
-      summary = "Get floors page",
-      description = "Get floors page",
+      summary = "Get rooms page",
+      description = "Get rooms page",
       responses = {
           @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
           @ApiResponse(responseCode = "401", description = "Unauthorized"),
           @ApiResponse(responseCode = "403", description = "Forbidden"),
       }
   )
-  public Page<Floor.FloorResponse> getFloors(
+  public Page<Room.RoomResponse> getRooms(
       @RequestParam(name = "page", defaultValue = "0") int page,
       @RequestParam(name = "size", defaultValue = "10") int size,
       @RequestParam(name = "query", defaultValue = "") String query
   ) {
-    return service.getFloors(page, size, query);
+    return service.getRooms(page, size, query);
   }
 
   @PostMapping
   @Operation(
       method = "POST",
-      summary = "Create floor",
-      description = "Create floor",
+      summary = "Create room",
+      description = "Create room",
       responses = {
           @ApiResponse(responseCode = "201", description = "Created", useReturnTypeSchema = true),
           @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -48,16 +47,16 @@ class FloorController {
           @ApiResponse(responseCode = "400", description = "Bad Request")
       }
   )
-  public Floor.FloorResponse createFloor(@RequestBody @Valid Floor.FloorRequest request) {
-    return service.createFloor(request);
+  public Room.RoomResponse createRoom(@RequestBody @Valid Room.RoomRequest request) {
+    return service.createRoom(request);
   }
 
 
   @GetMapping("/{id}")
   @Operation(
       method = "GET",
-      summary = "Get floor by id",
-      description = "Get floor by id",
+      summary = "Get room by id",
+      description = "Get room by id",
       responses = {
           @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
           @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -65,15 +64,15 @@ class FloorController {
           @ApiResponse(responseCode = "404", description = "Not Found")
       }
   )
-  public Floor.FloorResponse getFloor(@PathVariable Long id) {
-    return service.getFloor(id);
+  public Room.RoomResponse getRoom(@PathVariable Long id) {
+    return service.getRoom(id);
   }
 
   @PutMapping("/{id}")
   @Operation(
       method = "PUT",
-      summary = "Update floor by id",
-      description = "Update floor by id",
+      summary = "Update room by id",
+      description = "Update room by id",
       responses = {
           @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
           @ApiResponse(responseCode = "400", description = "Bad Request"),
@@ -82,15 +81,15 @@ class FloorController {
           @ApiResponse(responseCode = "404", description = "Not Found")
       }
   )
-  public Floor.FloorResponse updateFloor(@PathVariable Long id, @RequestBody @Valid Floor.FloorRequest request) {
-    return service.updateFloor(id, request);
+  public Room.RoomResponse updateRoom(@PathVariable Long id, @RequestBody @Valid Room.RoomRequest request) {
+    return service.updateRoom(id, request);
   }
 
   @DeleteMapping("/{id}")
   @Operation(
       method = "DELETE",
-      summary = "Delete floor by id",
-      description = "Delete floor by id",
+      summary = "Delete room by id",
+      description = "Delete room by id",
       responses = {
           @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
           @ApiResponse(responseCode = "401", description = "Unauthorized"),
@@ -98,29 +97,7 @@ class FloorController {
           @ApiResponse(responseCode = "404", description = "Not Found")
       }
   )
-  public Floor.FloorResponse deleteFloor(@PathVariable Long id) {
-    return service.deleteFloor(id);
+  public Room.RoomResponse deleteRoom(@PathVariable Long id) {
+    return service.deleteRoom(id);
   }
-
-  @GetMapping("/{id}/rooms")
-  @Operation(
-      method = "GET",
-      summary = "Get rooms by floor id",
-      description = "Get rooms by floor id",
-      responses = {
-          @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
-          @ApiResponse(responseCode = "401", description = "Unauthorized"),
-          @ApiResponse(responseCode = "403", description = "Forbidden"),
-          @ApiResponse(responseCode = "404", description = "Not Found")
-      }
-  )
-  public Page<Room.RoomResponse> getRoomsByFloor(
-      @PathVariable Long id,
-      @RequestParam(name = "page", defaultValue = "0") int page,
-      @RequestParam(name = "size", defaultValue = "10") int size,
-      @RequestParam(name = "query", defaultValue = "") String query
-  ) {
-    return service.getRoomsByFloor(id, page, size, query);
-  }
-
 }

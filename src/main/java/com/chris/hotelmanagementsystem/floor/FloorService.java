@@ -1,5 +1,7 @@
 package com.chris.hotelmanagementsystem.floor;
 
+import com.chris.hotelmanagementsystem.room.Room;
+import com.chris.hotelmanagementsystem.room.RoomFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 class FloorService {
 
   private final FloorFacade floorFacade;
+  private final RoomFacade roomFacade;
 
   public Page<Floor.FloorResponse> getFloors(int page, int size, String query) {
     return floorFacade.findAll(query, PageRequest.of(page, size)).map(Floor::toResponse);
@@ -37,5 +40,12 @@ class FloorService {
 
   public Floor.FloorResponse getFloor(Long id) {
     return floorFacade.findById(id).toResponse();
+  }
+
+  public Page<Room.RoomResponse> getRoomsByFloor(Long id, int page, int size, String query) {
+    Floor floor = floorFacade.findById(id);
+
+    return roomFacade.findByFloor(floor, query, PageRequest.of(page, size))
+        .map(Room::toResponse);
   }
 }

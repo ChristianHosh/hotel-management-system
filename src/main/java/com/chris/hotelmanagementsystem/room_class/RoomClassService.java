@@ -2,6 +2,8 @@ package com.chris.hotelmanagementsystem.room_class;
 
 import com.chris.hotelmanagementsystem.bed_type.BedType;
 import com.chris.hotelmanagementsystem.bed_type.BedTypeFacade;
+import com.chris.hotelmanagementsystem.room.Room;
+import com.chris.hotelmanagementsystem.room.RoomFacade;
 import com.chris.hotelmanagementsystem.room_class.room_class_bed.RoomClassBed;
 import com.chris.hotelmanagementsystem.room_class.room_class_bed.RoomClassBedFacade;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ class RoomClassService {
   private final RoomClassFacade roomClassFacade;
   private final BedTypeFacade bedTypeFacade;
   private final RoomClassBedFacade roomClassBedFacade;
+  private final RoomFacade roomFacade;
 
   public Page<RoomClass.RoomClassResponse> getRoomClasses(int page, int size, String query) {
     return roomClassFacade.findAll(query, PageRequest.of(page, size)).map(RoomClass::toResponse);
@@ -65,5 +68,12 @@ class RoomClassService {
 
     return roomClassBedFacade.findByRoomClass(roomClass, query, PageRequest.of(page, size))
         .map(RoomClassBed::toResponse);
+  }
+
+  public Page<Room.RoomResponse> getRoomsByRoomClass(Long id, int page, int size, String query) {
+    RoomClass roomClass = roomClassFacade.findById(id);
+
+    return roomFacade.findByRoomClass(roomClass, query, PageRequest.of(page, size))
+        .map(Room::toResponse);
   }
 }
