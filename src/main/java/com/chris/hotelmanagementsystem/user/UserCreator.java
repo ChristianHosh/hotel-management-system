@@ -20,6 +20,7 @@ public class UserCreator {
     if (optional.isEmpty()) {
       User user = new User();
       user.setUsername("admin");
+      user.setName("admin");
       user.setPassword(passwordEncoder.encode("a12345"));
       user.setRole(User.Role.ADMIN);
       repository.save(user);

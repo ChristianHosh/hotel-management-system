@@ -48,6 +48,10 @@ public abstract class CEntityFacade<T extends OEntity> {
     return getRepository().findById(id).orElseThrow(() -> CxException.notFound(entityClass(), "id", id));
   }
 
+  public final List<T> findAllById(List<Long> ids) {
+    return getRepository().findAllById(ids);
+  }
+
   public final Page<T> findAll(Pageable pageable) {
     return getRepository().findAll(pageable);
   }

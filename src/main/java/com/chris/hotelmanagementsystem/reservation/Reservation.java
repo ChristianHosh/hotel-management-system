@@ -2,6 +2,7 @@ package com.chris.hotelmanagementsystem.reservation;
 
 import com.chris.hotelmanagementsystem.addon.Addon;
 import com.chris.hotelmanagementsystem.entity.CEntity;
+import com.chris.hotelmanagementsystem.entity.CEntityResponse;
 import com.chris.hotelmanagementsystem.entity.annotations.Keyword;
 import com.chris.hotelmanagementsystem.entity.error.CxException;
 import com.chris.hotelmanagementsystem.room.Room;
@@ -9,12 +10,15 @@ import com.chris.hotelmanagementsystem.room_class.RoomClass;
 import com.chris.hotelmanagementsystem.room_class.room_class_bed.RoomClassBed;
 import com.chris.hotelmanagementsystem.user.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -95,6 +99,37 @@ public class Reservation extends CEntity {
 
     totalPrice = roomsTotalPrice + addonsTotalPrice;
   }
+
+  public ReservationResponse toResponse() {
+    return new ReservationResponse(this);
+  }
+
+  @Getter
+  public static class ReservationResponse extends CEntityResponse {
+
+    protected ReservationResponse(Reservation entity) {
+      super(entity);
+    }
+  }
+
+  record ReservationRequest(
+      @NotNull
+      Integer numberOfAdults,
+      @NotNull
+      Integer numberOfChildren,
+      @NotNull
+      LocalDate checkInDate,
+      @NotNull
+      LocalDate checkOutDate,
+      @Size(min = 1)
+      @NotNull
+      List<Long> roomIds,
+      @NotNull
+      List<Long> addonIds
+  ) {
+
+  }
+
 
   enum PaymentStatus {
     PENDING_PAYMENT, PAID, CANCELED

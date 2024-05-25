@@ -2,7 +2,6 @@ package com.chris.hotelmanagementsystem.security;
 
 import com.chris.hotelmanagementsystem.user.User;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,10 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Getter
-@RequiredArgsConstructor
-class UserDetailsImpl implements UserDetails {
-
-  private final User user;
+record UserDetailsImpl(User user) implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -61,8 +57,4 @@ class UserDetailsImpl implements UserDetails {
     return false;
   }
 
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(user);
-  }
 }

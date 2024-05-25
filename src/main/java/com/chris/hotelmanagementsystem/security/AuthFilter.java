@@ -46,11 +46,7 @@ public class AuthFilter extends OncePerRequestFilter {
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
       }
-    } catch (CxException e) {
-      ApiError error = ApiError.from(e);
-      writeError(response, error);
-      return;
-    }catch (Exception e) {
+    } catch (Exception e) {
       ApiError error = ApiError.from(CxException.unexpected(e));
       writeError(response, error);
       return;

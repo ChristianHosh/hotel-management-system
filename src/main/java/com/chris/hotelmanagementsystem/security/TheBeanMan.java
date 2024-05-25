@@ -16,7 +16,7 @@ public class TheBeanMan {
     Authentication auth = context.getAuthentication();
 
     if (auth.getPrincipal() instanceof UserDetailsImpl userDetails)
-      return userDetails.getUser();
+      return userDetails.user();
     return null;
   }
 

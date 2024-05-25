@@ -2,6 +2,7 @@ package com.chris.hotelmanagementsystem.floor;
 
 import com.chris.hotelmanagementsystem.entity.CEntity;
 import com.chris.hotelmanagementsystem.entity.CEntityResponse;
+import com.chris.hotelmanagementsystem.entity.annotations.Unique;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -18,6 +19,7 @@ import lombok.Setter;
 @Table(name = "t_floor")
 public class Floor extends CEntity {
 
+  @Unique
   @Column(name = "c_floor_number", nullable = false)
   private Integer floorNumber;
 

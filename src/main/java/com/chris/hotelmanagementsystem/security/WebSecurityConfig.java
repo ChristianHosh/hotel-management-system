@@ -55,7 +55,7 @@ public class WebSecurityConfig {
   @Bean
   public RoleHierarchy roleHierarchy() {
     RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-    String hierarchy = "ROLE_ADMIN > ROLE_USER";
+    String hierarchy = "ROLE_ADMIN > ROLE_CUSTOMER";
     roleHierarchy.setHierarchy(hierarchy);
     return roleHierarchy;
   }
@@ -64,7 +64,7 @@ public class WebSecurityConfig {
   public SecurityFilterChain filterChain(@NotNull HttpSecurity http) throws Exception {
     var adminAuth = AuthorityAuthorizationManager.<RequestAuthorizationContext>hasRole("ADMIN");
     adminAuth.setRoleHierarchy(roleHierarchy());
-    var userAuth = AuthorityAuthorizationManager.<RequestAuthorizationContext>hasRole("USER");
+    var userAuth = AuthorityAuthorizationManager.<RequestAuthorizationContext>hasRole("CUSTOMER");
     userAuth.setRoleHierarchy(roleHierarchy());
 
     http.cors(Customizer.withDefaults())
@@ -73,13 +73,18 @@ public class WebSecurityConfig {
         .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
         .exceptionHandling(e -> e.authenticationEntryPoint(authEntryPoint))
         .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(auth -> configureAuth(auth, adminAuth, userAuth));
+        .authorizeHttpRequests(auth -> configureAuth(auth, adminAuth));
 
     return configure(http).build();
   }
 
-  private void configureAuth(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry auth, AuthorityAuthorizationManager<RequestAuthorizationContext> adminAuth, AuthorityAuthorizationManager<RequestAuthorizationContext> userAuth) {
+  private void configureAuth(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry auth, AuthorityAuthorizationManager<RequestAuthorizationContext> adminAuth) {
     auth
+        .requestMatchers("/v3/api-docs/**").permitAll()
+        .requestMatchers("/swagger-ui/**").permitAll()
+
+        .requestMatchers(HttpMethod.GET).permitAll()
+
         .requestMatchers("/api/auth/*").permitAll()
         .requestMatchers("/api/users/*").access(adminAuth)
 
@@ -92,6 +97,13 @@ public class WebSecurityConfig {
 
         .requestMatchers("/api/room-classes/beds/*").access(adminAuth)
         .requestMatchers(HttpMethod.GET, "/api/room-classes/beds/*").permitAll()
+
+        .requestMatchers("/api/rooms/*").access(adminAuth)
+        .requestMatchers(HttpMethod.GET, "/api/rooms/*").permitAll()
+
+        .requestMatchers(HttpMethod.GET, "/api/reservations/*").access(adminAuth)
+        .requestMatchers(HttpMethod.GET, "/api/reservations/{id}").authenticated()
+        .requestMatchers(HttpMethod.POST, "/api/reservations").authenticated()
 
 
         .requestMatchers("/error").permitAll()
