@@ -13,7 +13,7 @@ public class CxExceptionHandler {
 
   @ExceptionHandler(CxException.class)
   public ResponseEntity<ApiError> handle(CxException cxException) {
-    if (cxException.getHttpStatus() == HttpStatus.INTERNAL_SERVER_ERROR)
+    if (cxException.getHttpStatus().is5xxServerError())
       log.error("server error: {}", cxException.getMessage(), cxException);
     else
       log.warn("user error: {}", cxException.getMessage(), cxException);

@@ -9,6 +9,11 @@ public record ApiError(
     long timestamp
 ) {
 
+  public ApiError {
+    if (status < 400)
+      throw new IllegalArgumentException("status must be >= 400");
+  }
+
   public static ApiError from(CxException e) {
     return new ApiError(
         e.getHttpStatus().value(),
