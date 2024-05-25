@@ -17,9 +17,7 @@ public class CxExceptionHandler {
       log.error("server error: {}", cxException.getMessage(), cxException);
     else
       log.warn("user error: {}", cxException.getMessage(), cxException);
-    return ResponseEntity
-        .status(cxException.getHttpStatus())
-        .body(ApiError.from(cxException));
+    return ApiError.from(cxException).toResponse();
   }
 
   @ExceptionHandler(Exception.class)
