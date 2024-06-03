@@ -28,19 +28,17 @@ import java.util.StringJoiner;
 @MappedSuperclass
 public abstract class OEntity implements Serializable {
 
-  public abstract Object getId();
-
   @CreationTimestamp
   @Column(name = "c_created_on", nullable = false, updatable = false)
   private LocalDateTime createdOn;
-
   @UpdateTimestamp
   @Column(name = "c_updated_on", nullable = false)
   private LocalDateTime updatedOn;
-
   @Getter(AccessLevel.NONE)
   @Column(name = "c_keyword")
   private String keyword;
+
+  public abstract Object getId();
 
   @SuppressWarnings("unchecked")
   final <T extends OEntity> T save() {
@@ -59,11 +57,10 @@ public abstract class OEntity implements Serializable {
         try {
           Object value = field.get(this);
           joiner.add(switch (value) {
-            case SpecEntity specEntity -> specEntity.getName();
-            case LocalDateTime localDateTime ->
-                localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            case LocalDate localDate -> localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            case LocalTime localTime -> localTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+            case SpecEntity spec -> spec.getName();
+            case LocalDateTime ldt -> ldt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            case LocalDate ld -> ld.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            case LocalTime lt -> lt.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
             case null -> "";
             default -> String.valueOf(value);
           });

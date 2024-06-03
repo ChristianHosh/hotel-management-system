@@ -38,6 +38,10 @@ public class Room extends CEntity {
   @JoinColumn(name = "c_floor_id", nullable = false)
   private Floor floor;
 
+  public static RoomResponse fromEntity(Room room) {
+    return room == null ? null : room.toResponse();
+  }
+
   @Override
   protected void validate() {
     super.validate();
@@ -53,10 +57,6 @@ public class Room extends CEntity {
 
   public RoomResponse toResponse() {
     return new RoomResponse(this);
-  }
-
-  public static RoomResponse fromEntity(Room room) {
-    return room == null ? null : room.toResponse();
   }
 
   @Getter

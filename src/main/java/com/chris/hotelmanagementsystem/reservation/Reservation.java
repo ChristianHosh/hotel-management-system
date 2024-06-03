@@ -104,6 +104,10 @@ public class Reservation extends CEntity {
     return new ReservationResponse(this);
   }
 
+  enum PaymentStatus {
+    PENDING_PAYMENT, PAID, CANCELED
+  }
+
   @Getter
   public static class ReservationResponse extends CEntityResponse {
 
@@ -128,10 +132,5 @@ public class Reservation extends CEntity {
       List<Long> addonIds
   ) {
 
-  }
-
-
-  enum PaymentStatus {
-    PENDING_PAYMENT, PAID, CANCELED
   }
 }

@@ -1,10 +1,10 @@
 package com.chris.hotelmanagementsystem.entity;
 
 import com.chris.hotelmanagementsystem.entity.error.CxException;
-import java.lang.reflect.ParameterizedType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 public abstract class CEntityFacade<T extends OEntity> {

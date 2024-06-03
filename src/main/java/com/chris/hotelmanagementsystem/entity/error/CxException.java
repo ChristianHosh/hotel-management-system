@@ -29,8 +29,12 @@ public class CxException extends RuntimeException {
     return new CxException(HttpStatus.FORBIDDEN, message);
   }
 
+  public static CxException badRequest(String message) {
+    return new CxException(HttpStatus.BAD_REQUEST, message);
+  }
+
   public static CxException badRequest(CEntity entity, String message) {
-    return new CxException(HttpStatus.BAD_REQUEST, String.format("(%s) %s", entity.getClass().getSimpleName(), message));
+    return badRequest(String.format("(%s) %s", entity.getClass().getSimpleName(), message));
   }
 
   public static CxException unexpected(Throwable cause) {

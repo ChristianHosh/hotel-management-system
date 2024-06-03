@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
+
 interface RoomRepository extends OEntityRepository<Room> {
 
   @Query("""
@@ -22,4 +24,13 @@ interface RoomRepository extends OEntityRepository<Room> {
        and r.keyword ilike concat('%', :query, '%')
       """)
   Page<Room> findByFloor(Floor floor, String query, Pageable pageable);
+
+  @Query("""
+      select r from Room r
+      inner join Reservation res on r.id in elements(res.rooms)
+      where (res.checkInDate not between :from and :to)
+      and (res.checkOutDate not between :from and :to)
+      group by r.id
+      """)
+  Page<Room> findAllAvailable(LocalDate from, LocalDate to, Pageable pageable);
 }

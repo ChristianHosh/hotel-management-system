@@ -34,12 +34,12 @@ public class RoomClass extends SpecEntity {
   @OneToMany(mappedBy = "roomClass", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<RoomClassBed> roomClassBeds = new LinkedHashSet<>();
 
-  public Stream<RoomClassBed> getRoomClassBedsStream() {
-    return roomClassBeds.stream();
-  }
-
   public static RoomClassResponse fromEntity(RoomClass entity) {
     return entity == null ? null : new RoomClassResponse(entity);
+  }
+
+  public Stream<RoomClassBed> getRoomClassBedsStream() {
+    return roomClassBeds.stream();
   }
 
   public RoomClassResponse toResponse() {

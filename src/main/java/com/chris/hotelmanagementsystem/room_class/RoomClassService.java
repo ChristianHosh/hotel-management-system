@@ -37,11 +37,11 @@ class RoomClassService {
   }
 
   public RoomClass.RoomClassResponse updateRoomClass(Long id, RoomClass.RoomClassRequest request) {
-      RoomClass roomClass = roomClassFacade.findById(id);
-      roomClass.setName(request.name());
-      roomClass.setBasePrice(request.basePrice());
+    RoomClass roomClass = roomClassFacade.findById(id);
+    roomClass.setName(request.name());
+    roomClass.setBasePrice(request.basePrice());
 
-      return roomClassFacade.save(roomClass).toResponse();
+    return roomClassFacade.save(roomClass).toResponse();
   }
 
   public RoomClass.RoomClassResponse deleteRoomClass(Long id) {

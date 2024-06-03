@@ -1,11 +1,16 @@
 package com.chris.hotelmanagementsystem.room;
 
+import com.chris.hotelmanagementsystem.entity.error.CxException;
 import com.chris.hotelmanagementsystem.floor.FloorFacade;
 import com.chris.hotelmanagementsystem.room_class.RoomClassFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
@@ -47,5 +52,29 @@ class RoomService {
     Room room = roomFacade.findById(id);
 
     return roomFacade.delete(room).toResponse();
+  }
+
+  public Page<Room.RoomResponse> getAvailableRooms(int page, int size, String fromDate, String toDate) {
+
+    LocalDate from;
+    LocalDate to;
+    try {
+      LocalDate now = LocalDate.now();
+      if (fromDate.isBlank())
+        from = now.withDayOfMonth(1);
+      else
+        from = LocalDate.parse(fromDate, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+      if (toDate.isBlank())
+        to = now.withDayOfMonth(now.getMonth().length(now.isLeapYear()));
+      else
+        to = LocalDate.parse(toDate, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    } catch (DateTimeException e) {
+      throw CxException.badRequest("Invalid date format");
+    }
+
+    return roomFacade.findAllAvailable(from, to, PageRequest.of(page, size))
+        .map(Room::toResponse);
+
   }
 }

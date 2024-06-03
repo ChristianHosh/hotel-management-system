@@ -34,6 +34,14 @@ public class RoomClassBed extends OEntity {
   @Column(name = "c_number_of_beds", nullable = false)
   private Integer numberOfBeds;
 
+  public static RoomClassBedResponse fromEntity(RoomClassBed entity) {
+    return entity == null ? null : entity.toResponse();
+  }
+
+  public RoomClassBedResponse toResponse() {
+    return new RoomClassBedResponse(BedType.fromEntity(bedType), numberOfBeds);
+  }
+
   public record RoomClassBedId(
       @Column(name = "c_room_class_id", nullable = false)
       Long roomClassId,
@@ -56,16 +64,9 @@ public class RoomClassBed extends OEntity {
     }
   }
 
-  public static RoomClassBedResponse fromEntity(RoomClassBed entity) {
-    return entity == null ? null : entity.toResponse();
-  }
-
-  public RoomClassBedResponse toResponse() {
-    return new RoomClassBedResponse(BedType.fromEntity(bedType), numberOfBeds);
-  }
-
   public record RoomClassBedResponse(
       SpecResponse bedType,
       Integer numberOfBeds
-  ) {}
+  ) {
+  }
 }

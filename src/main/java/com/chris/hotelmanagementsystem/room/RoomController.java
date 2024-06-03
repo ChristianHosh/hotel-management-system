@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @ResponseStatus(HttpStatus.OK)
 @RequestMapping(value = "/api/rooms")
 class RoomController {
-  
+
   private final RoomService service;
 
   @GetMapping
@@ -33,6 +33,17 @@ class RoomController {
       @RequestParam(name = "query", defaultValue = "") String query
   ) {
     return service.getRooms(page, size, query);
+  }
+
+  @GetMapping("/available")
+  @Operation(method = "GET")
+  public Page<Room.RoomResponse> getAvailableRooms(
+      @RequestParam(name = "page", defaultValue = "0") int page,
+      @RequestParam(name = "size", defaultValue = "10") int size,
+      @RequestParam(name = "fromDate", defaultValue = "") String fromDate,
+      @RequestParam(name = "toDate", defaultValue = "") String toDate
+  ) {
+    return service.getAvailableRooms(page, size, fromDate, toDate);
   }
 
   @PostMapping
