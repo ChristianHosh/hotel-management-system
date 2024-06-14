@@ -41,27 +41,25 @@ public class Reservation extends CEntity {
   @Enumerated
   @Column(name = "c_payment_status", nullable = false)
   private PaymentStatus paymentStatus;
+  @Enumerated
+  @Column(name = "c_reservation_status", nullable = false)
+  private ReservationStatus reservationStatus = ReservationStatus.CONFIRMED;
   @Keyword
   @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}, optional = false)
   @JoinColumn(name = "c_guest_id", nullable = false)
   private User guest;
   @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
-  @JoinTable(name = "t_reservation_rooms",
-      joinColumns = @JoinColumn(name = "c_reservation_id"),
-      inverseJoinColumns = @JoinColumn(name = "c_room_id"))
+  @JoinTable(name = "t_reservation_rooms", joinColumns = @JoinColumn(name = "c_reservation_id"), inverseJoinColumns = @JoinColumn(name = "c_room_id"))
   private Set<Room> rooms = new LinkedHashSet<>();
   @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
-  @JoinTable(name = "t_reservation_addons",
-      joinColumns = @JoinColumn(name = "c_reservation_id"),
-      inverseJoinColumns = @JoinColumn(name = "c_addon_id"))
+  @JoinTable(name = "t_reservation_addons", joinColumns = @JoinColumn(name = "c_reservation_id"), inverseJoinColumns = @JoinColumn(name = "c_addon_id"))
   private Set<Addon> addons = new LinkedHashSet<>();
 
   @Override
   protected void validate() {
     super.validate();
 
-    if (guest.getRole() != User.Role.CUSTOMER)
-      throw CxException.badRequest(this, "guest must be a customer");
+    if (guest.getRole() != User.Role.CUSTOMER) throw CxException.badRequest(this, "guest must be a customer");
 
     if (checkInDate.isAfter(checkOutDate))
       throw CxException.badRequest(this, "check-in date cannot be after check-out date");
@@ -69,12 +67,10 @@ public class Reservation extends CEntity {
     if (checkInDate.isBefore(LocalDate.now().plusDays(1)))
       throw CxException.badRequest(this, "check-in date cannot be before today");
 
-    if (rooms.isEmpty())
-      throw CxException.badRequest(this, "at least 1 room is required");
+    if (rooms.isEmpty()) throw CxException.badRequest(this, "at least 1 room is required");
 
     // check if the number of adults and children is less than the number of beds in the rooms
-    var roomsSummary = rooms.stream()
-        .map(Room::getRoomClass)
+    var roomsSummary = rooms.stream().map(Room::getRoomClass)
         .flatMap(RoomClass::getRoomClassBedsStream)
         .mapToInt(RoomClassBed::getNumberOfBeds)
         .summaryStatistics();
@@ -89,13 +85,9 @@ public class Reservation extends CEntity {
 
     // calculate the total price of the reservation
     int numberOfNights = checkInDate.until(checkOutDate).getDays();
-    double roomsTotalPrice = rooms.stream()
-        .mapToDouble(Room::getBasePrice)
-        .sum() * numberOfNights;
+    double roomsTotalPrice = rooms.stream().mapToDouble(Room::getBasePrice).sum() * numberOfNights;
 
-    double addonsTotalPrice = addons.stream()
-        .mapToDouble(Addon::getBasePrice)
-        .sum();
+    double addonsTotalPrice = addons.stream().mapToDouble(Addon::getBasePrice).sum();
 
     totalPrice = roomsTotalPrice + addonsTotalPrice;
   }
@@ -104,8 +96,12 @@ public class Reservation extends CEntity {
     return new ReservationResponse(this);
   }
 
-  enum PaymentStatus {
+  public enum PaymentStatus {
     PENDING_PAYMENT, PAID, CANCELED
+  }
+
+  public enum ReservationStatus {
+    CONFIRMED, CHECKED_IN, CHECKED_OUT, CANCELED
   }
 
   @Getter
@@ -116,21 +112,9 @@ public class Reservation extends CEntity {
     }
   }
 
-  record ReservationRequest(
-      @NotNull
-      Integer numberOfAdults,
-      @NotNull
-      Integer numberOfChildren,
-      @NotNull
-      LocalDate checkInDate,
-      @NotNull
-      LocalDate checkOutDate,
-      @Size(min = 1)
-      @NotNull
-      List<Long> roomIds,
-      @NotNull
-      List<Long> addonIds
-  ) {
+  record ReservationRequest(@NotNull Integer numberOfAdults, @NotNull Integer numberOfChildren,
+                            @NotNull LocalDate checkInDate, @NotNull LocalDate checkOutDate,
+                            @Size(min = 1) @NotNull List<Long> roomIds, @NotNull List<Long> addonIds) {
 
   }
 }

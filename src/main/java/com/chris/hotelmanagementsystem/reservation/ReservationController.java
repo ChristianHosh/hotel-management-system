@@ -69,4 +69,55 @@ class ReservationController {
   public Reservation.ReservationResponse createReservation(@RequestBody Reservation.ReservationRequest request) {
     return service.createReservation(request);
   }
+
+  @PutMapping("/{id}/check-in")
+  @Operation(
+      method = "PUT",
+      summary = "changes the status of reservation to checked-in",
+      description = "changes the status of reservation to checked-in",
+      responses = {
+          @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
+          @ApiResponse(responseCode = "401", description = "Unauthorized"),
+          @ApiResponse(responseCode = "403", description = "Forbidden"),
+          @ApiResponse(responseCode = "404", description = "Not Found"),
+          @ApiResponse(responseCode = "400", description = "Bad Request")
+      }
+  )
+  public Reservation.ReservationResponse checkIn(@PathVariable Long id) {
+    return service.checkIn(id);
+  }
+
+  @PutMapping("/{id}/check-out")
+  @Operation(
+      method = "PUT",
+      summary = "changes the status of reservation to checked-out",
+      description = "changes the status of reservation to checked-out",
+      responses = {
+          @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
+          @ApiResponse(responseCode = "401", description = "Unauthorized"),
+          @ApiResponse(responseCode = "403", description = "Forbidden"),
+          @ApiResponse(responseCode = "404", description = "Not Found"),
+          @ApiResponse(responseCode = "400", description = "Bad Request")
+      }
+  )
+  public Reservation.ReservationResponse checkOut(@PathVariable Long id) {
+    return service.checkOut(id);
+  }
+
+  @PutMapping("/{id}/cancel")
+  @Operation(
+      method = "PUT",
+      summary = "changes the status of reservation to cancelled",
+      description = "changes the status of reservation to cancelled",
+      responses = {
+          @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
+          @ApiResponse(responseCode = "401", description = "Unauthorized"),
+          @ApiResponse(responseCode = "403", description = "Forbidden"),
+          @ApiResponse(responseCode = "404", description = "Not Found"),
+          @ApiResponse(responseCode = "400", description = "Bad Request")
+      }
+  )
+  public Reservation.ReservationResponse cancel(@PathVariable Long id) {
+    return service.cancelReservation(id);
+  }
 }

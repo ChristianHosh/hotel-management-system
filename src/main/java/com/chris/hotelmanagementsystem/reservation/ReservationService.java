@@ -33,11 +33,6 @@ class ReservationService {
       throw CxException.forbidden("you can't view this reservation");
   }
 
-  public Reservation.ReservationResponse deleteReservation(Long id) {
-    Reservation reservation = reservationFacade.findById(id);
-    return reservationFacade.delete(reservation).toResponse();
-  }
-
   public Reservation.ReservationResponse createReservation(Reservation.ReservationRequest request) {
     User currentUser = TheBeanMan.getCurrentChunk();
 
@@ -76,5 +71,39 @@ class ReservationService {
   public Page<Reservation.ReservationResponse> getAllReservations(int page, int size, String query, String from, String to) {
     return reservationFacade.findAll(page, size, query, from, to)
         .map(Reservation::toResponse);
+  }
+
+  public Reservation.ReservationResponse cancelReservation(Long id) {
+    Reservation reservation = reservationFacade.findById(id);
+    if (reservation.getReservationStatus() != Reservation.ReservationStatus.CONFIRMED)
+      throw CxException.badRequest(reservation, "only confirmed reservations can be cancelled");
+
+    reservation.setReservationStatus(Reservation.ReservationStatus.CANCELED);
+
+    return reservationFacade.save(reservation).toResponse();
+  }
+
+  public Reservation.ReservationResponse checkIn(Long id) {
+    Reservation reservation = reservationFacade.findById(id);
+    if (reservation.getReservationStatus() != Reservation.ReservationStatus.CONFIRMED)
+      throw CxException.badRequest(reservation, "only confirmed reservation can be checked in");
+    if (reservation.getCheckInDate().isBefore(LocalDate.now().plusDays(1)))
+      throw CxException.badRequest(reservation, "check-in date hasn't passed yet");
+
+    reservation.setReservationStatus(Reservation.ReservationStatus.CHECKED_IN);
+
+    return reservationFacade.save(reservation).toResponse();
+  }
+
+  public Reservation.ReservationResponse checkOut(Long id) {
+    Reservation reservation = reservationFacade.findById(id);
+    if (reservation.getReservationStatus() != Reservation.ReservationStatus.CHECKED_IN)
+      throw CxException.badRequest(reservation, "only checked-in reservation can be checked out");
+    if (reservation.getCheckOutDate().isBefore(LocalDate.now().plusDays(1)))
+      throw CxException.badRequest(reservation, "check-out date hasn't passed yet");
+
+    reservation.setReservationStatus(Reservation.ReservationStatus.CHECKED_OUT);
+
+    return reservationFacade.save(reservation).toResponse();
   }
 }
