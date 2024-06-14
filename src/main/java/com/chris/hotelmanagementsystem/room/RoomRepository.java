@@ -26,11 +26,10 @@ interface RoomRepository extends OEntityRepository<Room> {
   Page<Room> findByFloor(Floor floor, String query, Pageable pageable);
 
   @Query("""
-      select r from Room r
-      inner join Reservation res on r.id in elements(res.rooms)
+      select distinct r from Room r
+      inner join Reservation res on r in elements(res.rooms)
       where (res.checkInDate not between :from and :to)
       and (res.checkOutDate not between :from and :to)
-      group by r.id
       """)
   Page<Room> findAllAvailable(LocalDate from, LocalDate to, Pageable pageable);
 }
