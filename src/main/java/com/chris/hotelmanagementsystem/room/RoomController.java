@@ -36,7 +36,16 @@ class RoomController {
   }
 
   @GetMapping("/available")
-  @Operation(method = "GET")
+  @Operation(
+          method = "GET",
+          summary = "Get available rooms",
+          description = "Get a paginated list of available rooms within a specified date range",
+          responses = {
+                  @ApiResponse(responseCode = "200", description = "OK", useReturnTypeSchema = true),
+                  @ApiResponse(responseCode = "401", description = "Unauthorized"),
+                  @ApiResponse(responseCode = "403", description = "Forbidden"),
+          }
+  )
   public Page<Room.RoomResponse> getAvailableRooms(
       @RequestParam(name = "page", defaultValue = "0") int page,
       @RequestParam(name = "size", defaultValue = "10") int size,
