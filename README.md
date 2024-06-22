@@ -1,6 +1,6 @@
 # Hotel Management System
 
-### Christian Hosh
+### Christian Hosh 1200482
 ### Othman Hijawi 1202927
 
 ## Project Overview
@@ -53,3 +53,8 @@ We built an Hotel Management System using Spring boot for the web services and t
 
 ```bash
 mvn clean install
+```
+
+## Docker Image
+
+https://hub.docker.com/repository/docker/chrishosh/spring-hms/general
