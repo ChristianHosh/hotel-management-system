@@ -11,15 +11,15 @@ import java.time.LocalDate;
 public interface ReservationRepository extends OEntityRepository<Reservation> {
 
   @Query("""
-      select (count(res.id) > 0) from Reservation res
+      select (count(res.id)) from Reservation res
       where (
                 (:checkInDate between res.checkInDate and res.checkOutDate) or
-                (:checkInDate between res.checkInDate and res.checkOutDate) or
+                (:checkOutDate between res.checkInDate and res.checkOutDate) or
                 (res.checkInDate between :checkInDate and :checkOutDate)
             ) and
             (:room in elements(res.rooms))
       """)
-  boolean isRoomAvailable(Room room, LocalDate checkInDate, LocalDate checkOutDate);
+  int isRoomAvailable(Room room, LocalDate checkInDate, LocalDate checkOutDate);
 
   @Query("""
       select res from Reservation res

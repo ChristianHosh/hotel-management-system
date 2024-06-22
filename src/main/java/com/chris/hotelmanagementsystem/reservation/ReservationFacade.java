@@ -28,7 +28,7 @@ public class ReservationFacade extends CEntityFacade<Reservation> {
     if (checkInDate.isAfter(checkOutDate))
       throw CxException.hardcoded(HttpStatus.BAD_REQUEST, "check-in date cannot be after check-out date");
 
-    return repository.isRoomAvailable(room, checkInDate, checkOutDate);
+    return repository.isRoomAvailable(room, checkInDate, checkOutDate) == 0;
   }
 
   public Page<Reservation> findAll(int page, int size, String query, String from, String to) {
